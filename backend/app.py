@@ -1,8 +1,12 @@
+"""
+Backend API for managing services and incidents using Flask.
+Provides endpoints for services, incidents, and health checks.
+"""
+
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-# Mock data (pretend this is coming from a DB)
 services = [
     {"id": 1, "name": "Auth Service", "status": "operational"},
     {"id": 2, "name": "Payment Service", "status": "degraded"},
@@ -21,16 +25,36 @@ incidents = [
 
 @app.route("/api/services", methods=["GET"])
 def get_services():
+    """
+    Retrieve the list of all services.
+
+    Returns:
+        Response: JSON array of service objects.
+    """
     return jsonify(services)
 
 
 @app.route("/api/incidents", methods=["GET"])
 def get_incidents():
+    """
+    Retrieve the list of all incidents.
+
+    Returns:
+        Response: JSON array of incident objects.
+    """
     return jsonify(incidents)
 
 
 @app.route("/api/incidents", methods=["POST"])
 def create_incident():
+    """
+    Create a new incident and add it to the incidents list.
+
+    Expects JSON with 'service_id' and 'title'.
+
+    Returns:
+        Response: JSON object of the newly created incident.
+    """
     data = request.json
     new_incident = {
         "id": len(incidents) + 1,
@@ -44,6 +68,12 @@ def create_incident():
 
 @app.route("/api/health", methods=["GET"])
 def health_check():
+    """
+    Health check endpoint to verify API is running.
+
+    Returns:
+        Response: JSON object with status.
+    """
     return jsonify({"status": "healthy"}), 200
 
 
