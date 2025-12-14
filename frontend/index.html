@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Service Status Dashboard</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        .service { padding: 10px; border-bottom: 1px solid #ccc; }
+        .operational { color: green; }
+        .degraded { color: orange; }
+    </style>
+</head>
+<body>
+
+<h1>Service Status</h1>
+<div id="services"></div>
+
+<h2>Incidents</h2>
+<div id="incidents"></div>
+
+<script>
+    async function loadServices() {
+        const res = await fetch("/api/services");
+        const data = await res.json();
+
+        document.getElementById("services").innerHTML =
+            data.map(s =>
+                `<div class="service">
+                    <strong>${s.name}</strong>:
+                    <span class="${s.status}">${s.status}</span>
+                </div>`
+            ).join("");
+    }
+
+    async function loadIncidents() {
+        const res = await fetch("/api/incidents");
+        const data = await res.json();
+
+        document.getElementById("incidents").innerHTML =
+            data.map(i =>
+                `<div>
+                    Incident: ${i.title} (Status: ${i.status})
+                </div>`
+            ).join("");
+    }
+
+    loadServices();
+    loadIncidents();
+</script>
+
+</body>
+</html>
