@@ -39,6 +39,9 @@ jobs:
 
       - name: Install pylint
         run: pip3 install pylint
+        
+      - name: Install Flask
+        run: pip3 install flask
 
       - name: Run linter on backend code
         run: pylint backend
