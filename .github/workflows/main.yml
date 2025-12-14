@@ -1,0 +1,44 @@
+name: CICD-Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install HTMLHint
+        run: npm install -g htmlhint
+
+      - name: Run linter on frontend code
+        run: htmlhint ./frontend/index.html
+
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Update packages
+        run: sudo apt update
+
+      - name: Install Python and pip
+        run: |
+          sudo apt install -y python3
+          sudo apt install -y python3-pip
+
+      - name: Install pylint
+        run: pip3 install pylint
+
+      - name: Run linter on backend code
+        run: pylint ./backend
